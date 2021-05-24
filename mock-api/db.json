@@ -1,0 +1,62 @@
+{
+  "todos": [
+    {
+      "id": 1,
+      "text": "Deign ui",
+      "completed": true,
+      "color": "red"
+    },
+    {
+      "id": 2,
+      "text": "discover state",
+      "completed": false
+    },
+    {
+      "id": 3,
+      "text": "discover actions",
+      "completed": false
+    },
+    {
+      "id": 4,
+      "text": "implement reducer",
+      "completed": false,
+      "color": "blue"
+    },
+    {
+      "id": 5,
+      "text": "Complete patterns",
+      "completed": false,
+      "color": "red"
+    },
+    {
+      "text": "salam",
+      "completed": false,
+      "id": 6
+    },
+    {
+      "text": "bye",
+      "completed": false,
+      "id": 7
+    },
+    {
+      "text": "efjn",
+      "completed": false,
+      "id": 8
+    },
+    {
+      "text": "sfd,fn'l",
+      "completed": false,
+      "id": 9
+    },
+    {
+      "text": "sd,fnd",
+      "completed": false,
+      "id": 10
+    },
+    {
+      "text": ",ndfnsdf",
+      "completed": false,
+      "id": 11
+    }
+  ]
+}
