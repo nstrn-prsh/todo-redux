@@ -14,8 +14,11 @@ const StatusFilter = () => {
           dispatch(statusFilterChanged(status));
      }
 
+     //note: key haro migire az to object va be araye tabdil mikonim va roshon map mizanim
      const renderedFilters = Object.keys(StatusFilters).map((key) => {
+          // value: all, active, completed
           const value = StatusFilters[key];
+          // kodom filter bayad bashe?
           const className = value === status ? "selected" : "";
 
           return (

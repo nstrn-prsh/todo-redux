@@ -7,13 +7,14 @@ const ColorFilters = () => {
      const colors = useSelector(selectColorsFilter);
      const dispatch = useDispatch();
 
-     function handlChangeColor(color, changeType) {
+     //f23: ye rang va inke bayad ezafe beshe ya bardashte beshe
+     function handleChangeColor(color, changeType) {
           dispatch(colorFilterChanged(color, changeType));
      }
 
      const renderedColors = availableColors.map((color) => {
           const checked = colors.includes(color);
-          const changeType = checked ? "removed" : "added";
+          const changeType = checked ? "color/removed" : "color/added";
 
           return (
                <label key={color}>
@@ -21,7 +22,7 @@ const ColorFilters = () => {
                          type='checkbox'
                          name={color}
                          defaultChecked={checked}
-                         onChange={() => handlChangeColor(color, changeType)}
+                         onChange={() => handleChangeColor(color, changeType)}
                     />
                     <span
                          className='color-block'
