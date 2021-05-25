@@ -3,7 +3,7 @@ import {
      selectStatusFilter,
      statusFilterChanged,
      StatusFilters,
-} from "./../filter/filterSlice";
+} from "./../todos/filterSlice";
 
 const StatusFilter = () => {
      const status = useSelector(selectStatusFilter);

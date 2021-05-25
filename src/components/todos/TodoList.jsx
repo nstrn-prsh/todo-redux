@@ -18,6 +18,13 @@ const TodoList = () => {
           return <div>Error laoding todos</div>;
      }
 
+     // f18
+     /*const todos = useSelector(selectTodos)
+     // note: tabdile object be araye baraye map kardan 
+    const renderedListItems = Object.keys(todos).map((todoId) => {
+        return <TodoListItem key={todoId} todo={todos[todoId]} />
+    })*/
+
      const renderedListItems = todosIds.map((id) => {
           return <TodoListItem key={id} id={id} />;
      });

@@ -1,7 +1,7 @@
 /* eslint-disable default-case */
 import produce from "immer";
 import { createSelector } from "reselect";
-import { StatusFilters } from "../filter/filterSlice";
+import { StatusFilters } from "./filterSlice";
 import { client } from "../../api/client";
 
 const initState = {
@@ -9,6 +9,9 @@ const initState = {
      entities: {},
 };
 
+// immer
+// araye
+// object
 const todosReducer = produce((state, action) => {
      switch (action.type) {
           //f17
@@ -16,40 +19,66 @@ const todosReducer = produce((state, action) => {
                const todo = action.payload;
                state.entities[todo.id] = todo;
                break;
-          // const todo = action.payload;
-          //    return {
-          //         ...state,
-          //         entities: [...state.entities, todo],
-          //    };
+          /*const todo = action.payload;
+             return {
+                  ...state,
+                  entities: [...state.entities, todo],
+             };*/
+          /*const todo = action.payload
+             return {
+                 ...state,
+                 entities: {
+                     ...state.entities,
+                     [todo.id]: todo
+                 }
+             }*/
+
           case "todos/todoToggled":
                const toggledTodoId = action.payload;
                state.entities[toggledTodoId].completed =
                     !state.entities[toggledTodoId].completed;
                break;
-          // const toggledTodoId = action.payload;
-          //    return {
-          //         ...state,
-          //         entities: state.entities.map((todo) => {
-          //              if (todo.id === toggledTodoId) {
-          //                   return {
-          //                        ...todo,
-          //                        completed: !todo.completed,
-          //                   };
-          //              }
-          //              return todo;
-          //         }),
-          //    };
+          /*const toggledTodoId = action.payload;
+             return {
+                  ...state,
+                  entities: state.entities.map((todo) => {
+                       if (todo.id === toggledTodoId) {
+                            return {
+                                 ...todo,
+                                 completed: !todo.completed,
+                            };
+                       }
+                       return todo;
+                  }),
+             };*/
+          /*const todoToggled = state.entities[toggledTodoId]
+            return {
+                ...state,
+                entities: {
+                    ...state.entities,
+                    [toggledTodoId]: {
+                        ...todoToggled,
+                        completed: !todoToggled.completed
+                    }
+                }
+            }*/
           case "todos/todoDeleted":
                const deletedTodoId = action.payload;
                delete state.entities[deletedTodoId];
                break;
-          //    const deletedTodoId = action.payload;
-          //    return {
-          //         ...state,
-          //         entities: state.entities.filter(
-          //              (todo) => todo.id !== deletedTodoId
-          //         ),
-          //    };
+          /*const deletedTodoId = action.payload;
+             return {
+                  ...state,
+                  entities: state.entities.filter(
+                       (todo) => todo.id !== deletedTodoId
+                  ),
+             };*/
+          /*const entities = { ...state.entities }
+            delete entities[deletedTodoId]
+            return {
+                ...state,
+                entities
+            }*/
 
           case "todos/markAllCompleted":
                Object.values(state.entities).forEach((todo) => {
@@ -98,11 +127,13 @@ export const todoAdded = (todo) => ({
      payload: todo,
 });
 
+// f18: components/todos/TodoListItem.jsx --> handleCompletedChanged
 export const todoToggled = (todoId) => ({
      type: "todos/todoToggled",
      payload: todoId,
 });
 
+// f18: components/todos/TodoListItem.jsx --> handleDelete
 export const todoDeleted = (todoId) => ({
      type: "todos/todoDeleted",
      payload: todoId,
@@ -183,17 +214,14 @@ const selectFilteredTodos = createSelector(
      (todos, filters) => {
           const { status, colors } = filters;
           const showAll = status === StatusFilters.All;
-
           if (showAll && colors.length === 0) {
                return todos;
           }
-
           const showCompleted = status === StatusFilters.Completed;
           return todos.filter((todo) => {
                const statusFilter = showAll || todo.completed === showCompleted;
                const colorsFilter =
                     colors.length === 0 || colors.includes(todo.color);
-
                return statusFilter && colorsFilter;
           });
      }

@@ -10,6 +10,7 @@ const TodoListItem = ({ id }) => {
      const dispatch = useDispatch();
 
      const { text, completed, color } = todo;
+     
      const colorOptions = availableColors.map((c) => (
           <option key={c} value={c}>
                {capitalize(c)}
