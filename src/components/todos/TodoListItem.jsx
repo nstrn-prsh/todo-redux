@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { ReactComponent as TimesSolid } from "./times-solid.svg";
 import { todoDeleted, todoToggled, colorChanged } from "./todosSlice";
 
-export const availableColors = ["green", "blue", "orange", "purple", "red"];
+export const availableColors = ["green", "blue", "yellow", "purple", "red"];
 export const capitalize = (s) => s[0].toUpperCase() + s.slice(1);
 
 const TodoListItem = ({ id }) => {

@@ -3,19 +3,21 @@ import { useDispatch } from "react-redux";
 import { saveNewTodo } from "./../todos/todosSlice";
 
 export default function Header() {
-     const [text, setText] = useState("");
+     const [getText, setText] = useState("");
      const [status, setStatus] = useState("idle");
 
      const dispatch = useDispatch();
 
      const handleChanges = (e) => setText(e.target.value);
+
+     // dispatch kardane value
      const handleKeyDown = async (e) => {
-          const trimmedText = text.trim();
+          // trim() space ghabool nemikone
+          const trimmedText = getText.trim();
+          //note: 13 yani Enter
           if (e.which === 13 && trimmedText) {
                setStatus("loading");
-
                await dispatch(saveNewTodo(trimmedText));
-
                setText("");
                setStatus("idle");
           }
@@ -30,7 +32,7 @@ export default function Header() {
                <input
                     className='new-todo'
                     placeholder={placeholder}
-                    value={text}
+                    value={getText}
                     onChange={handleChanges}
                     onKeyDown={handleKeyDown}
                     disabled={isLoading}
