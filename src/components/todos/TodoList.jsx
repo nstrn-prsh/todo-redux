@@ -21,7 +21,12 @@ const TodoList = () => {
      // f18
      /*const todos = useSelector(selectTodos)
      // note: tabdile object be araye baraye map kardan 
-    const renderedListItems = Object.keys(todos).map((todoId) => {
+    const renderedListIttem key={id} todo={id} />
+    })*/
+     /*f19
+      optimize: bejaye inke hameye todo haro begirim, faghat idio migirim ta vaghti ke toggle shod dg kole list render nashe
+      const todoIds = useSelector(state=>Object.keys(state.todos.entities))
+    const renderedListItems =todoIds.map((todoId) => {
         return <TodoListItem key={todoId} todo={todos[todoId]} />
     })*/
 

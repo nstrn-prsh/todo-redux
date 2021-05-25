@@ -205,7 +205,7 @@ export const selectTodos = createSelector(selectTodoEntities, (todoEntities) =>
      Object.values(todoEntities)
 );
 
-// f17: components/todos/TodoList.jsx --> todosIds
+// f17: components/todos/TodoList.jsx --> useSelector
 // export const selectTodos = state=>state.todos.entities
 
 const selectFilteredTodos = createSelector(
