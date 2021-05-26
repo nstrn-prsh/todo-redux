@@ -110,7 +110,7 @@ const todosReducer = produce((state, action) => {
                state.entities = newEntities;
                state.status = "idle";
                break;
-          case "todos/todosLoadedFailes":
+          case "todos/todosLoadedFails":
                state.status = "error";
      }
 }, initState);
@@ -164,8 +164,8 @@ const todosLoadedSuccess = (todos) => ({
      payload: todos,
 });
 
-const todosLoadedFailes = () => ({
-     type: "todos/todosLoadedFailes",
+const todosLoadedFails = () => ({
+     type: "todos/todosLoadedFails",
 });
 
 // thunk function
@@ -194,29 +194,36 @@ export const fetchTodos = (dispatch, getState) => {
           .then((todos) => {
                dispatch(todosLoadedSuccess(todos));
           })
-          .catch((error) => todosLoadedFailes());
+          .catch((error) => todosLoadedFails());
 };
 
 export const selectTodosIds = (state) => Object.keys(state.todos.entities);
 
 export const selectTodoEntities = (state) => state.todos.entities;
 
-export const selectTodos = createSelector(selectTodoEntities, (todoEntities) =>
-     Object.values(todoEntities)
+// new: after using reselect:
+// ye seri selector ro be onvane parametr be sorate taki ya araye migire
+// ejrashon mikone va state ro beheshon pas mide va khrojio return mikone toye ye tabe
+// optimize: age todoEntities taghiri nakone, Object.values(todoEntities) dobare mohasebe nemishe
+export const selectTodos = createSelector(
+     selectTodoEntities,
+     //note: hamye object haro be araye tabdil mikonim
+     (todoEntities) => Object.values(todoEntities)
 );
 
-// f17: components/todos/TodoList.jsx --> useSelector
-// export const selectTodos = state=>state.todos.entities
-
+//f24: Todos ro select mikone bar mabnaye filter boodan
 const selectFilteredTodos = createSelector(
      selectTodos,
      (state) => state.filters,
      (todos, filters) => {
           const { status, colors } = filters;
+          // age filter all bood va color select nashode bood hameye todo haro bayad namayesh bedim
           const showAll = status === StatusFilters.All;
           if (showAll && colors.length === 0) {
                return todos;
           }
+          // age rang ham entekhab karde bood bayad hardota filtero barresi konim
+          // Completed ya true hast ya fasle . age false bashe yani Active hast
           const showCompleted = status === StatusFilters.Completed;
           return todos.filter((todo) => {
                const statusFilter = showAll || todo.completed === showCompleted;
@@ -227,7 +234,33 @@ const selectFilteredTodos = createSelector(
      }
 );
 
-export const selectFilterdTodoIds = createSelector(
+//keys (id) ro select mikone
+// f24: components/todos/TodoList.jsx --> useSelector
+export const selectFilteredTodoIds = createSelector(
      selectFilteredTodos,
      (filteredTodos) => filteredTodos.map((todo) => todo.id)
 );
+
+// f17: components/todos/TodoList.jsx --> useSelector
+// export const selectTodos = state=>state.todos.entities
+
+// before using reselect
+/*f24
+const selectFilteredTodos = (state) => {
+     const todos = Object.values(selectTodos(state));
+     const { status, colors } = state.filters;
+     const showAll = status === StatusFilters.All;
+     if (showAll && colors.length === 0)
+          return todos;
+     const showCompleted = status === StatusFilters.Completed;
+     return todos.filter((todo) => {
+          const statusFilter = showAll || todo.completed === showCompleted;
+          const colorsFilter =
+               colors.length === 0 || colors.includes(todo.color);
+          return statusFilter && colorsFilter;
+     });
+};
+
+export const selectFilteredTodoIds = (state) =>
+     selectFilteredTodos(state).map((todo) => todo.id);
+     */
