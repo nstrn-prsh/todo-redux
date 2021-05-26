@@ -2,6 +2,7 @@ import { useSelector } from "react-redux";
 import { selectTodos } from "../todos/todosSlice";
 
 const RemainingTodos = () => {
+     // f26
      const count = useSelector((state) => {
           const todos = selectTodos(state).filter((todo) => !todo.completed);
           return todos.length;

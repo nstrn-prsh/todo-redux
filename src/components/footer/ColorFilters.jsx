@@ -1,7 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
-import { colorFilterChanged, selectColorsFilter } from "./../todos/filterSlice";
-
-export const availableColors = ["green", "blue", "yellow", "purple", "red"];
+import {
+     availableColors,
+     colorFilterChanged,
+     selectColorsFilter,
+} from "./../todos/filterSlice";
 
 const ColorFilters = () => {
      const colors = useSelector(selectColorsFilter);

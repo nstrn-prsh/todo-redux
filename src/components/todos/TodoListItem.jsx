@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
+import { availableColors } from "./filterSlice";
 import { ReactComponent as TimesSolid } from "./times-solid.svg";
 import { todoDeleted, todoToggled, colorChanged } from "./todosSlice";
 
-export const availableColors = ["green", "blue", "yellow", "purple", "red"];
 export const capitalize = (s) => s[0].toUpperCase() + s.slice(1);
 
 const TodoListItem = ({ id }) => {
@@ -10,24 +10,20 @@ const TodoListItem = ({ id }) => {
      const dispatch = useDispatch();
 
      const { text, completed, color } = todo;
-     
+
      const colorOptions = availableColors.map((c) => (
           <option key={c} value={c}>
                {capitalize(c)}
           </option>
      ));
 
-     function handleCompletedChanged() {
-          dispatch(todoToggled(todo.id));
-     }
+     const handleCompletedChanged = () => dispatch(todoToggled(todo.id));
 
-     function handleDelete() {
-          dispatch(todoDeleted(todo.id));
-     }
+     const handleDelete = () => dispatch(todoDeleted(todo.id));
 
-     function handlChangeColor(e) {
+     // f26
+     const handleChangeColor = (e) =>
           dispatch(colorChanged(todo.id, e.target.value));
-     }
 
      return (
           <li>
@@ -46,7 +42,7 @@ const TodoListItem = ({ id }) => {
                               className='colorPicker'
                               defaultValue={color}
                               style={{ color }}
-                              onChange={handlChangeColor}
+                              onChange={handleChangeColor}
                          >
                               <option value=''></option>
                               {colorOptions}

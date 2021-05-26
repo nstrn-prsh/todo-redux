@@ -1,6 +1,7 @@
 import { useDispatch } from "react-redux";
 import { clearCompleted, markAllCompleted } from "./../todos/todosSlice";
 
+// f26
 export default function Actions() {
      const dispatch = useDispatch();
 

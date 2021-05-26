@@ -80,6 +80,7 @@ const todosReducer = produce((state, action) => {
                 entities
             }*/
 
+          //   f26
           case "todos/markAllCompleted":
                Object.values(state.entities).forEach((todo) => {
                     state.entities[todo.id].completed = true;
@@ -93,6 +94,7 @@ const todosReducer = produce((state, action) => {
                });
                break;
 
+          // f26
           case "todos/colorChanged":
                const { color, id } = action.payload;
                state.entities[id].color = color;
@@ -117,8 +119,7 @@ const todosReducer = produce((state, action) => {
 
 export default todosReducer;
 
-// optimize:
-/* ***** ACTION FACTORIES ***** */
+/*optimize: ***** ACTION FACTORIES ***** */
 // be jaye inke toye dispatch action o payload ro benevisim
 // inja be sorate tabe minevisim ke khatamoonam kamtar beshe
 
@@ -139,14 +140,17 @@ export const todoDeleted = (todoId) => ({
      payload: todoId,
 });
 
+// f26: components/footer/Actions.jsx -->onMarkAllCompletedClick
 export const markAllCompleted = () => ({
      type: "todos/markAllCompleted",
 });
 
+// f26: components/footer/Actions.jsx -->onClearCompletedClick
 export const clearCompleted = () => ({
      type: "todos/clearCompleted",
 });
 
+// f26: components/todos/TodoListItem/jsx --> handleChangeColor
 export const colorChanged = (todoId, color) => ({
      type: "todos/colorChanged",
      payload: {

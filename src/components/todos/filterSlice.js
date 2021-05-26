@@ -7,6 +7,8 @@ export const StatusFilters = {
      Completed: "completed",
 };
 
+export const availableColors = ["green", "blue", "yellow", "purple", "red"];
+
 const initState = {
      status: StatusFilters.All,
      colors: [],
