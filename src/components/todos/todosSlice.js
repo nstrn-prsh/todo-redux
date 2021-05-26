@@ -159,19 +159,6 @@ export const colorChanged = (todoId, color) => ({
      },
 });
 
-const todosLoadingStarted = (todos) => ({
-     type: "todos/todosLoadingStarted",
-});
-
-const todosLoadedSuccess = (todos) => ({
-     type: "todos/todosLoadedSuccess",
-     payload: todos,
-});
-
-const todosLoadedFails = () => ({
-     type: "todos/todosLoadedFails",
-});
-
 // thunk function
 
 //f17: components/Header/header.jsx -->handleKeyDown
@@ -186,11 +173,26 @@ export const saveNewTodo = (text) => {
                text,
                completed: false,
           };
+          //f30: ezafe kardane todo be server
           const todo = await client.post("todos", initTodo);
           dispatch(todoAdded(todo));
      };
 };
 
+const todosLoadingStarted = (todos) => ({
+     type: "todos/todosLoadingStarted",
+});
+
+const todosLoadedSuccess = (todos) => ({
+     type: "todos/todosLoadedSuccess",
+     payload: todos,
+});
+
+const todosLoadedFails = () => ({
+     type: "todos/todosLoadedFails",
+});
+
+// f30: Thunk
 export const fetchTodos = (dispatch, getState) => {
      dispatch(todosLoadingStarted());
      client
