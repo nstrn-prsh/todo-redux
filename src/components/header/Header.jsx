@@ -4,7 +4,8 @@ import { saveNewTodo } from "./../todos/todosSlice";
 
 export default function Header() {
      const [getText, setText] = useState("");
-     const [status, setStatus] = useState("idle");
+     // f32
+     const [getStatus, setStatus] = useState("idle");
 
      const dispatch = useDispatch();
 
@@ -23,7 +24,7 @@ export default function Header() {
           }
      };
 
-     const isLoading = "loading" === status;
+     const isLoading = "loading" === getStatus;
      const placeholder = isLoading ? "" : "What needs to be done?";
      const loader = isLoading ? <div className='loader'></div> : null;
 

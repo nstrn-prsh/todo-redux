@@ -100,9 +100,12 @@ const todosReducer = produce((state, action) => {
                state.entities[id].color = color;
                break;
 
+          // f31
+          // ghabl az inke darkhast ro befrestim in halato dispatch mikonim
           case "todos/todosLoadingStarted":
                state.status = "loading";
                break;
+          // javabe darkhast ke omad in status ro az loading be idle taghir midim
           case "todos/todosLoadedSuccess":
                const todos = action.payload;
                const newEntities = {};
@@ -183,6 +186,7 @@ const todosLoadingStarted = (todos) => ({
      type: "todos/todosLoadingStarted",
 });
 
+// f31
 const todosLoadedSuccess = (todos) => ({
      type: "todos/todosLoadedSuccess",
      payload: todos,
@@ -192,7 +196,7 @@ const todosLoadedFails = () => ({
      type: "todos/todosLoadedFails",
 });
 
-// f30: Thunk
+// f30: Thunk- darkhast az server
 export const fetchTodos = (dispatch, getState) => {
      dispatch(todosLoadingStarted());
      client
@@ -201,7 +205,7 @@ export const fetchTodos = (dispatch, getState) => {
                dispatch(todosLoadedSuccess(todos));
           })
           .catch((error) => todosLoadedFails());
-};
+}; 
 
 export const selectTodosIds = (state) => Object.keys(state.todos.entities);
 

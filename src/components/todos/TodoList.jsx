@@ -6,6 +6,8 @@ const TodoList = () => {
      const todosIds = useSelector(selectFilteredTodoIds, shallowEqual);
      const loading = useSelector((state) => state.todos.status);
 
+     // optimize: in if ha mishe behtar neveshte beshan
+     
      if ("loading" === loading) {
           return (
                <div className='todo-list'>
