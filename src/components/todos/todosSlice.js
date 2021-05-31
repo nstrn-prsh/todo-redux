@@ -3,6 +3,7 @@ import produce from "immer";
 import { createSelector } from "reselect";
 import { StatusFilters } from "./filterSlice";
 import { client } from "../../api/client";
+import { createAction, nanoid } from "@reduxjs/toolkit";
 
 const initState = {
      status: "idle",
@@ -126,40 +127,68 @@ export default todosSlice;
 // be jaye inke toye dispatch action o payload ro benevisim
 // inja be sorate tabe minevisim ke khatamoonam kamtar beshe
 
-export const todoAdded = (todo) => ({
+/*export const todoAdded = (todo) => ({
      type: "todos/todoAdded",
      payload: todo,
-});
+});*/
+export const todoAdded = createAction("todos/todoAdded");
 
 // f18: components/todos/TodoListItem.jsx --> handleCompletedChanged
-export const todoToggled = (todoId) => ({
+/*export const todoToggled = (todoId) => ({
      type: "todos/todoToggled",
      payload: todoId,
-});
+});*/
+export const todoToggled = createAction("todos/todoToggled");
 
 // f18: components/todos/TodoListItem.jsx --> handleDelete
-export const todoDeleted = (todoId) => ({
+/*export const todoDeleted = (todoId) => ({
      type: "todos/todoDeleted",
      payload: todoId,
-});
+});*/
+export const todoDeleted = createAction("todos/todoDeleted");
 
 // f26: components/footer/Actions.jsx -->onMarkAllCompletedClick
-export const markAllCompleted = () => ({
+/*export const markAllCompleted = () => ({
      type: "todos/markAllCompleted",
-});
+});*/
+export const markAllCompleted = createAction("todos/markAllCompleted");
 
 // f26: components/footer/Actions.jsx -->onClearCompletedClick
-export const clearCompleted = () => ({
+/*export const clearCompleted = () => ({
      type: "todos/clearCompleted",
-});
+});*/
+export const clearCompleted = createAction("todos/clearCompleted");
 
 // f26: components/todos/TodoListItem/jsx --> handleChangeColor
-export const colorChanged = (todoId, color) => ({
+/*export const colorChanged = (todoId, color) => ({
      type: "todos/colorChanged",
      payload: {
           id: todoId,
           color,
      },
+});*/
+export const colorChanged = createAction(
+     "todos/colorChanged",
+     (todoId, color) => {
+          return {
+               payload: {
+                    id: todoId,
+                    color,
+               },
+          };
+     }
+);
+
+// f35
+export const example = createAction("todos/todoAdded", (num, text) => {
+     return {
+          payload: {
+               num,
+               id: nanoid(),
+               text,
+               date: new Date().toISOString(),
+          },
+     };
 });
 
 // thunk function
@@ -205,7 +234,7 @@ export const fetchTodos = (dispatch, getState) => {
                dispatch(todosLoadedSuccess(todos));
           })
           .catch((error) => todosLoadedFails());
-}; 
+};
 
 export const selectTodosIds = (state) => Object.keys(state.todos.entities);
 
