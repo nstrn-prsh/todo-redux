@@ -12,7 +12,7 @@ const initState = {
 //f22: immer
 // araye
 // object
-const todosReducer = produce((state, action) => {
+const todosSlice = produce((state, action) => {
      switch (action.type) {
           //f17
           case "todos/todoAdded":
@@ -120,7 +120,7 @@ const todosReducer = produce((state, action) => {
      }
 }, initState);
 
-export default todosReducer;
+export default todosSlice;
 
 /*optimize: ***** ACTION FACTORIES ***** */
 // be jaye inke toye dispatch action o payload ro benevisim
