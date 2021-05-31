@@ -3,12 +3,29 @@ import produce from "immer";
 import { createSelector } from "reselect";
 import { StatusFilters } from "./filterSlice";
 import { client } from "../../api/client";
-import { createAction, nanoid } from "@reduxjs/toolkit";
+import { createAction, createReducer, nanoid } from "@reduxjs/toolkit";
 
 const initState = {
      status: "idle",
      entities: {},
 };
+
+// f36: example of using createReducer
+/*const todoAdded1 = createAction("todos/todoAdded");
+const todoToggle1 = createAction("todos/todoToggle");
+
+const todosSlice1 = createReducer(initState, (builder) => {
+     builder
+          .addCase(todoAdded1, (state, action) => {
+               const todo = action.payload;
+               state.entities[todo.id] = todo;
+          })
+          .addCase(todoToggle1, (state, action) => {
+               const toggledTodoId = action.payload;
+               state.entities[toggledTodoId].completed =
+                    !state.entities[toggledTodoId].completed;
+          });
+});*/
 
 //f22: immer
 // araye
@@ -180,7 +197,7 @@ export const colorChanged = createAction(
 );
 
 // f35
-export const example = createAction("todos/todoAdded", (num, text) => {
+/*export const example = createAction("todos/todoAdded", (num, text) => {
      return {
           payload: {
                num,
@@ -189,7 +206,7 @@ export const example = createAction("todos/todoAdded", (num, text) => {
                date: new Date().toISOString(),
           },
      };
-});
+});*/
 
 // thunk function
 
