@@ -1,20 +1,96 @@
 /* eslint-disable default-case */
-import produce from "immer";
+// import produce from "immer";
 import { createSelector } from "reselect";
 import { StatusFilters } from "./filterSlice";
 import { client } from "../../api/client";
-import { createAction, createReducer, nanoid } from "@reduxjs/toolkit";
+import {
+     createSlice,
+     // createAction,
+     // createReducer,
+     // nanoid,
+} from "@reduxjs/toolkit";
 
-const initState = {
+const initialState = {
      status: "idle",
      entities: {},
 };
+
+// f37: createSlice(): dige be createAction va createReducer niazi nadarim
+// name --> be avale hame action type ha meghdari ke behesh dadim ro ezafe mikone
+/* toye objecte reducers harkodom az case haro be ebarati be soorate ye reducer daryaft mikonim
+2ta parametr dare: state va action
+new: ghsmate dovome action.type be onvane esma tabe gharar migire va dar eine hal key ham hast
+, toolkit khodesh action.type ro tashkhis mide*/
+const todosSlice = createSlice({
+     name: "todos",
+     initialState,
+     reducers: {
+          todoAdded(state, action) {
+               const todo = action.payload;
+               state.entities[todo.id] = todo;
+          },
+          todoToggled(state, action) {
+               const toggledTodoId = action.payload;
+               state.entities[toggledTodoId].completed =
+                    !state.entities[toggledTodoId].completed;
+          },
+          todoDeleted(state, action) {
+               const deletedTodoId = action.payload;
+               delete state.entities[deletedTodoId];
+          },
+
+          markAllCompleted(state) {
+               Object.values(state.entities).forEach((todo) => {
+                    state.entities[todo.id].completed = true;
+               });
+          },
+          clearCompleted(state) {
+               Object.values(state.entities).forEach((todo) => {
+                    if (todo.completed) {
+                         delete state.entities[todo.id];
+                    }
+               });
+          },
+
+          // note: ino nemitonim be sorate function vared konim va bayad object bashe pas barash key taiin mikonim
+          // be khatere in motefavete ke bishtar az yeki payload dare
+          // toye prepare() mitonim on logic marboot be payload (daghighan hamonjori ke to action factory hast) ro biarim
+          colorChanged: {
+               reducer(state, action) {
+                    const { color, id } = action.payload;
+                    state.entities[id].color = color;
+               },
+               prepare(todoId, color) {
+                    return {
+                         payload: {
+                              id: todoId,
+                              color,
+                         },
+                    };
+               },
+          },
+     },
+});
+
+console.log(todosSlice);
+
+// action factories
+export const {
+     todoAdded,
+     todoToggled,
+     todoDeleted,
+     markAllCompleted,
+     clearCompleted,
+     colorChanged,
+} = todosSlice.actions;
+
+export default todosSlice.reducer;
 
 // f36: example of using createReducer
 /*const todoAdded1 = createAction("todos/todoAdded");
 const todoToggle1 = createAction("todos/todoToggle");
 
-const todosSlice1 = createReducer(initState, (builder) => {
+const todosSlice1 = createReducer(initialState, (builder) => {
      builder
           .addCase(todoAdded1, (state, action) => {
                const todo = action.payload;
@@ -30,19 +106,19 @@ const todosSlice1 = createReducer(initState, (builder) => {
 //f22: immer
 // araye
 // object
-const todosSlice = produce((state, action) => {
-     switch (action.type) {
-          //f17
-          case "todos/todoAdded":
-               const todo = action.payload;
-               state.entities[todo.id] = todo;
-               break;
-          /*const todo = action.payload;
+//- const todosSlice = produce((state, action) => {
+//- switch (action.type) {
+//f17
+//- case "todos/todoAdded":
+//-    const todo = action.payload;
+//-     state.entities[todo.id] = todo;
+//-     break;
+/*const todo = action.payload;
              return {
                   ...state,
                   entities: [...state.entities, todo],
              };*/
-          /*const todo = action.payload
+/*const todo = action.payload
              return {
                  ...state,
                  entities: {
@@ -51,12 +127,12 @@ const todosSlice = produce((state, action) => {
                  }
              }*/
 
-          case "todos/todoToggled":
-               const toggledTodoId = action.payload;
-               state.entities[toggledTodoId].completed =
-                    !state.entities[toggledTodoId].completed;
-               break;
-          /*const toggledTodoId = action.payload;
+//- case "todos/todoToggled":
+//-      const toggledTodoId = action.payload;
+//-      state.entities[toggledTodoId].completed =
+//-           !state.entities[toggledTodoId].completed;
+//-      break;
+/*const toggledTodoId = action.payload;
              return {
                   ...state,
                   entities: state.entities.map((todo) => {
@@ -69,7 +145,7 @@ const todosSlice = produce((state, action) => {
                        return todo;
                   }),
              };*/
-          /*const todoToggled = state.entities[toggledTodoId]
+/*const todoToggled = state.entities[toggledTodoId]
             return {
                 ...state,
                 entities: {
@@ -80,65 +156,65 @@ const todosSlice = produce((state, action) => {
                     }
                 }
             }*/
-          case "todos/todoDeleted":
-               const deletedTodoId = action.payload;
-               delete state.entities[deletedTodoId];
-               break;
-          /*const deletedTodoId = action.payload;
+//- case "todos/todoDeleted":
+//-      const deletedTodoId = action.payload;
+//-      delete state.entities[deletedTodoId];
+//-      break;
+/*const deletedTodoId = action.payload;
              return {
                   ...state,
                   entities: state.entities.filter(
                        (todo) => todo.id !== deletedTodoId
                   ),
              };*/
-          /*const entities = { ...state.entities }
+/*const entities = { ...state.entities }
             delete entities[deletedTodoId]
             return {
                 ...state,
                 entities
             }*/
 
-          //   f26
-          case "todos/markAllCompleted":
-               Object.values(state.entities).forEach((todo) => {
-                    state.entities[todo.id].completed = true;
-               });
-               break;
-          case "todos/clearCompleted":
-               Object.values(state.entities).forEach((todo) => {
-                    if (todo.completed) {
-                         delete state.entities[todo.id];
-                    }
-               });
-               break;
+//   f26
+//- case "todos/markAllCompleted":
+//-      Object.values(state.entities).forEach((todo) => {
+//-           state.entities[todo.id].completed = true;
+//-     });
+//-      break;
+//- case "todos/clearCompleted":
+//-      Object.values(state.entities).forEach((todo) => {
+//-           if (todo.completed) {
+//-                delete state.entities[todo.id];
+//-           }
+//-      });
+//-      break;
 
-          // f26
-          case "todos/colorChanged":
-               const { color, id } = action.payload;
-               state.entities[id].color = color;
-               break;
+// f26
+//- case "todos/colorChanged":
+//-      const { color, id } = action.payload;
+//-     state.entities[id].color = color;
+//-      break;
 
-          // f31
-          // ghabl az inke darkhast ro befrestim in halato dispatch mikonim
-          case "todos/todosLoadingStarted":
-               state.status = "loading";
-               break;
-          // javabe darkhast ke omad in status ro az loading be idle taghir midim
-          case "todos/todosLoadedSuccess":
-               const todos = action.payload;
-               const newEntities = {};
-               todos.forEach((todo) => {
-                    newEntities[todo.id] = todo;
-               });
-               state.entities = newEntities;
-               state.status = "idle";
-               break;
-          case "todos/todosLoadedFails":
-               state.status = "error";
-     }
-}, initState);
+// f31
+// ghabl az inke darkhast ro befrestim in halato dispatch mikonim
+//- case "todos/todosLoadingStarted":
+//-      state.status = "loading";
+//-      break;
+// javabe darkhast ke omad in status ro az loading be idle taghir midim
+//-           case "todos/todosLoadedSuccess":
+//-                const todos = action.payload;
+//-                const newEntities = {};
+//-                todos.forEach((todo) => {
+//-                     newEntities[todo.id] = todo;
+//-                });
+//-                state.entities = newEntities;
+//-                state.status = "idle";
+//-                break;
+//-           case "todos/todosLoadedFails":
+//-                state.status = "error";
+//-      }
+//- }, initialState);
 
-export default todosSlice;
+//- export default todosSlice;
 
 /*optimize: ***** ACTION FACTORIES ***** */
 // be jaye inke toye dispatch action o payload ro benevisim
@@ -148,33 +224,33 @@ export default todosSlice;
      type: "todos/todoAdded",
      payload: todo,
 });*/
-export const todoAdded = createAction("todos/todoAdded");
+//- export const todoAdded = createAction("todos/todoAdded");
 
 // f18: components/todos/TodoListItem.jsx --> handleCompletedChanged
 /*export const todoToggled = (todoId) => ({
      type: "todos/todoToggled",
      payload: todoId,
 });*/
-export const todoToggled = createAction("todos/todoToggled");
+//- export const todoToggled = createAction("todos/todoToggled");
 
 // f18: components/todos/TodoListItem.jsx --> handleDelete
 /*export const todoDeleted = (todoId) => ({
      type: "todos/todoDeleted",
      payload: todoId,
 });*/
-export const todoDeleted = createAction("todos/todoDeleted");
+//- export const todoDeleted = createAction("todos/todoDeleted");
 
 // f26: components/footer/Actions.jsx -->onMarkAllCompletedClick
 /*export const markAllCompleted = () => ({
      type: "todos/markAllCompleted",
 });*/
-export const markAllCompleted = createAction("todos/markAllCompleted");
+//- export const markAllCompleted = createAction("todos/markAllCompleted");
 
 // f26: components/footer/Actions.jsx -->onClearCompletedClick
 /*export const clearCompleted = () => ({
      type: "todos/clearCompleted",
 });*/
-export const clearCompleted = createAction("todos/clearCompleted");
+//- export const clearCompleted = createAction("todos/clearCompleted");
 
 // f26: components/todos/TodoListItem/jsx --> handleChangeColor
 /*export const colorChanged = (todoId, color) => ({
@@ -184,17 +260,17 @@ export const clearCompleted = createAction("todos/clearCompleted");
           color,
      },
 });*/
-export const colorChanged = createAction(
-     "todos/colorChanged",
-     (todoId, color) => {
-          return {
-               payload: {
-                    id: todoId,
-                    color,
-               },
-          };
-     }
-);
+//- export const colorChanged = createAction(
+//-      "todos/colorChanged",
+//-      (todoId, color) => {
+//-           return {
+//-                payload: {
+//-                     id: todoId,
+//-                     color,
+//-                },
+//-           };
+//-      }
+//- );
 
 // f35
 /*export const example = createAction("todos/todoAdded", (num, text) => {

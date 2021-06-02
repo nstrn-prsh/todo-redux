@@ -4,7 +4,8 @@ import { Provider } from "react-redux";
 import "./index.css";
 import App from "./App";
 import store from "./redux/store";
-import { example, fetchTodos } from "./components/todos/todosSlice";
+// import { example } from "./components/todos/todosSlice";
+import { fetchTodos } from "./components/todos/todosSlice";
 
 // f35
 /*console.log(example);
