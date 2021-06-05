@@ -23,30 +23,14 @@
       "color": "blue"
     },
     {
-      "id": 5,
-      "text": "Complete patterns",
+      "text": "s,cm",
       "completed": false,
-      "color": "red"
+      "id": 5
     },
     {
-      "text": "f,gmx",
+      "text": "s,mdns",
       "completed": false,
       "id": 6
-    },
-    {
-      "text": "d,fmf",
-      "completed": false,
-      "id": 7
-    },
-    {
-      "text": "d,gfdmng",
-      "completed": false,
-      "id": 8
-    },
-    {
-      "text": "s,fmmf",
-      "completed": false,
-      "id": 9
     }
   ]
 }
